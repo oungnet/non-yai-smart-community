@@ -120,3 +120,7 @@ button {
 button:hover {
   background: #1e40af;
 }
+
+iframe {
+  border: none;
+}
