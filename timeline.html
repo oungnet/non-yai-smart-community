@@ -2,88 +2,159 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เส้นเวลาประวัติบ้านโนนใหญ่</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 body {
-  font-family: sans-serif;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 20px;
+    font-family: sans-serif;
+    margin: 0;
+    background: #f4f6f9;
 }
 
-h1 {
-  text-align: center;
+header {
+    background: #1e2b3c;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
 .timeline {
-  position: relative;
-  margin: 40px auto;
-  padding-left: 40px;
-  border-left: 4px solid #16a34a;
-  max-width: 800px;
+    position: relative;
+    margin: 40px 0;
+    padding-left: 40px;
+    border-left: 4px solid #2e8b57;
 }
 
 .event {
-  margin-bottom: 30px;
-  position: relative;
+    margin-bottom: 40px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.event::before {
-  content: "";
-  position: absolute;
-  left: -12px;
-  top: 5px;
-  width: 16px;
-  height: 16px;
-  background: #16a34a;
-  border-radius: 50%;
+.event:hover {
+    transform: translateX(5px);
 }
 
-.year {
-  font-weight: bold;
-  color: #16a34a;
+.event.active h3 {
+    color: #2e8b57;
 }
 
-.title {
-  font-size: 18px;
-  margin: 5px 0;
+.dot {
+    position: absolute;
+    left: -11px;
+    width: 16px;
+    height: 16px;
+    background: #2e8b57;
+    border-radius: 50%;
 }
 
-.desc {
-  color: #444;
+.chart-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 50px;
 }
 </style>
 </head>
+
 <body>
 
-<h1>เส้นเวลาประวัติบ้านโนนใหญ่</h1>
+<header>
+<h2>เส้นเวลาประวัติบ้านโนนใหญ่</h2>
+</header>
 
-<div class="timeline" id="timeline"></div>
+<div class="container">
+
+<div id="timeline" class="timeline"></div>
+
+<div class="chart-box">
+<h3>สัดส่วนเหตุการณ์ตามหมวดหมู่</h3>
+<canvas id="categoryChart"></canvas>
+</div>
+
+</div>
 
 <script>
-async function loadTimeline() {
-  const response = await fetch("data/events.json");
-  const events = await response.json();
+const API_URL = "https://script.google.com/macros/s/AKfycbxB1oKGPaNItZiVMqo3coljp7bpm_Gq7VPe8-Jdzog6p9VbwMD3eaJI8a9VwIlVG4rs6g/exec?type=EVENTS";
 
-  events.sort((a, b) => a.year_be - b.year_be);
+fetch(API_URL)
+.then(res => res.json())
+.then(data => {
 
-  const container = document.getElementById("timeline");
+    // เรียงตามปี
+    data.sort((a,b) => a.year_be - b.year_be);
 
-  events.forEach(event => {
-    const div = document.createElement("div");
-    div.className = "event";
+    const timeline = document.getElementById("timeline");
 
-    div.innerHTML = `
-      <div class="year">พ.ศ. ${event.year_be}</div>
-      <div class="title">${event.title}</div>
-      <div class="desc">${event.description}</div>
-    `;
+    const categoryCount = {};
 
-    container.appendChild(div);
-  });
+    data.forEach(event => {
+
+        const div = document.createElement("div");
+        div.className = "event";
+
+        const dot = document.createElement("div");
+        dot.className = "dot";
+
+        const year = document.createElement("h3");
+        year.textContent = "พ.ศ. " + event.year_be;
+
+        const title = document.createElement("h4");
+        title.textContent = event.title;
+
+        const desc = document.createElement("p");
+        desc.textContent = event.description;
+
+        div.appendChild(dot);
+        div.appendChild(year);
+        div.appendChild(title);
+        div.appendChild(desc);
+
+        div.addEventListener("click", () => {
+            document.querySelectorAll(".event").forEach(e => e.classList.remove("active"));
+            div.classList.add("active");
+        });
+
+        timeline.appendChild(div);
+
+        // นับหมวดหมู่
+        if(!categoryCount[event.category]){
+            categoryCount[event.category] = 0;
+        }
+        categoryCount[event.category]++;
+    });
+
+    createChart(categoryCount);
+});
+
+function createChart(categoryData){
+    const ctx = document.getElementById('categoryChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(categoryData),
+            datasets: [{
+                label: 'จำนวนเหตุการณ์',
+                data: Object.values(categoryData)
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
 }
-
-loadTimeline();
 </script>
 
 </body>
