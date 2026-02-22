@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>เส้นเวลาประวัติบ้านโนนใหญ่</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.timeline {
+  position: relative;
+  margin: 40px auto;
+  padding-left: 40px;
+  border-left: 4px solid #16a34a;
+  max-width: 800px;
+}
+
+.event {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.event::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 5px;
+  width: 16px;
+  height: 16px;
+  background: #16a34a;
+  border-radius: 50%;
+}
+
+.year {
+  font-weight: bold;
+  color: #16a34a;
+}
+
+.title {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.desc {
+  color: #444;
+}
+</style>
+</head>
+<body>
+
+<h1>เส้นเวลาประวัติบ้านโนนใหญ่</h1>
+
+<div class="timeline" id="timeline"></div>
+
+<script>
+async function loadTimeline() {
+  const response = await fetch("data/events.json");
+  const events = await response.json();
+
+  events.sort((a, b) => a.year_be - b.year_be);
+
+  const container = document.getElementById("timeline");
+
+  events.forEach(event => {
+    const div = document.createElement("div");
+    div.className = "event";
+
+    div.innerHTML = `
+      <div class="year">พ.ศ. ${event.year_be}</div>
+      <div class="title">${event.title}</div>
+      <div class="desc">${event.description}</div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+loadTimeline();
+</script>
+
+</body>
+</html>
