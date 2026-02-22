@@ -60,6 +60,11 @@ footer {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+.card h2 {
+  border-left: 4px solid #2563eb;
+  padding-left: 10px;
+}
+
 .stats {
   display: flex;
   gap: 2rem;
