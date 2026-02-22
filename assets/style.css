@@ -124,3 +124,10 @@ button:hover {
 iframe {
   border: none;
 }
+
+.ai-btn {
+    background: #2e8b57;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: white;
+}
