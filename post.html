@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -5,23 +6,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ข่าวประชาสัมพันธ์</title>
 <style>
-body { font-family: sans-serif; background:#f4f6f9; margin:0; }
-.container { max-width:900px; margin:40px auto; padding:20px; }
+body { font-family:sans-serif; background:#f4f6f9; margin:0; }
+.container { max-width:1000px; margin:40px auto; padding:20px; }
 .card {
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:10px;
+  background:white;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:10px;
+  transition:0.2s;
 }
-h2 { margin-top:0; }
-.meta { font-size:14px; color:gray; }
+.card:hover { transform:translateY(-3px); }
+.meta { font-size:13px; color:gray; margin-bottom:10px; }
+a { text-decoration:none; color:inherit; }
+.filter { margin-bottom:20px; }
 </style>
 </head>
 <body>
 
 <div class="container">
+
 <h1>ข่าวประชาสัมพันธ์</h1>
+
+<select id="categoryFilter" class="filter">
+  <option value="">ทั้งหมด</option>
+</select>
+
 <div id="posts"></div>
+
 </div>
 
 <script>
@@ -31,28 +42,51 @@ fetch(API_URL)
 .then(res => res.json())
 .then(data => {
 
-    const container = document.getElementById("posts");
+  const container = document.getElementById("posts");
+  const filter = document.getElementById("categoryFilter");
 
-    // แสดงเฉพาะ published
-    const posts = data
-        .filter(p => p.status === "published")
-        .sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  const posts = data
+    .filter(p => p.status === "published")
+    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 
-    posts.forEach(post => {
+  const categories = [...new Set(posts.map(p => p.category))];
+  categories.forEach(cat=>{
+    const opt=document.createElement("option");
+    opt.value=cat;
+    opt.textContent=cat;
+    filter.appendChild(opt);
+  });
 
-        const div = document.createElement("div");
-        div.className = "card";
+  function render(selectedCategory=""){
 
-        div.innerHTML = `
+    container.innerHTML="";
+
+    posts
+      .filter(p => !selectedCategory || p.category===selectedCategory)
+      .forEach(post=>{
+
+        const div=document.createElement("div");
+        div.className="card";
+
+        div.innerHTML=`
+          <a href="post-detail.html?id=${post.id}">
             <h2>${post.title}</h2>
             <div class="meta">
-                โดย ${post.author} | ${post.created_at}
+              ${post.category} | ${post.created_at} | โดย ${post.author}
             </div>
-            <p>${post.content}</p>
+            <p>${post.excerpt || ""}</p>
+          </a>
         `;
 
         container.appendChild(div);
-    });
+      });
+  }
+
+  filter.addEventListener("change",()=>{
+    render(filter.value);
+  });
+
+  render();
 
 });
 </script>
