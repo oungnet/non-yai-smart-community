@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รายละเอียดโพสต์</title>
+<style>
+body { font-family:sans-serif; background:#f4f6f9; margin:0; }
+.container { max-width:900px; margin:40px auto; padding:20px; background:white; border-radius:10px; }
+.meta { font-size:13px; color:gray; margin-bottom:20px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<div id="post"></div>
+</div>
+
+<script>
+const API_URL = "YOUR_APPS_SCRIPT_URL?type=POSTS";
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+fetch(API_URL)
+.then(res=>res.json())
+.then(data=>{
+
+  const post = data.find(p => p.id === id && p.status==="published");
+
+  if(!post){
+    document.getElementById("post").innerHTML="<h2>ไม่พบโพสต์</h2>";
+    return;
+  }
+
+  document.getElementById("post").innerHTML=`
+    <h1>${post.title}</h1>
+    <div class="meta">
+      ${post.category} | ${post.created_at} | โดย ${post.author}
+    </div>
+    <div>${post.content.replace(/\n/g,"<br>")}</div>
+  `;
+});
+</script>
+
+</body>
+</html>
