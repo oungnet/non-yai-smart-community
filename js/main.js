@@ -1,75 +1,117 @@
+const API_BASE = "https://script.google.com/macros/s/AKfycbyoFuzSd9aHPEWGuLCSJaoxJBZIhfDmP470cPrz9MhDy792sLmU0SeROhB1vdFewROpjQ/exec";
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ===== Stats =====
-  fetch("data/stats.json")
-    .then(res => res.json())
-    .then(data => {
-
-      if (document.getElementById("population")) {
-        document.getElementById("population").textContent = data.population;
-        document.getElementById("households").textContent = data.households;
-        document.getElementById("updated").textContent = data.updated;
-      }
-
-      if (document.getElementById("home-population")) {
-        document.getElementById("home-population").textContent = data.population;
-        document.getElementById("home-households").textContent = data.households;
-        document.getElementById("home-updated").textContent = data.updated;
-      }
-
-    })
-    .catch(err => console.error("Stats fetch error:", err));
-
-  // ===== Community =====
-  if (document.getElementById("community-name")) {
-
-    fetch("data/community.json")
+  // =========================
+  // Utility Fetch Function
+  // =========================
+  function fetchData(type) {
+    return fetch(`${API_BASE}?type=${type}`)
       .then(res => res.json())
-      .then(data => {
+      .catch(err => {
+        console.error(`${type} fetch error:`, err);
+        return [];
+      });
+  }
 
-        document.getElementById("community-name").textContent = data.name;
-        document.getElementById("community-location").textContent =
-          "ต." + data.tambon + " อ." + data.amphur + " จ." + data.province;
+  // =========================
+  // NEWS PAGE
+  // =========================
+  if (document.getElementById("news-list")) {
 
-        document.getElementById("community-summary").textContent = data.summary;
-        document.getElementById("community-history").textContent = data.history;
-
-        const jobsList = document.getElementById("community-jobs");
-        jobsList.innerHTML = "";
-
-        data.main_jobs.forEach(job => {
-          const li = document.createElement("li");
-          li.textContent = job;
-          jobsList.appendChild(li);
-        });
-
-      })
-      .catch(err => console.error("Community fetch error:", err));
-
-    // News page
-    if (document.getElementById("news-list")) {
-
-      fetch("data/news.json")
-       .then(res => res.json())
-       .then(data => {
+    fetchData("EVENTS").then(data => {
 
       const container = document.getElementById("news-list");
       container.innerHTML = "";
 
       data.forEach(item => {
-        const article = document.createElement("div");
-        article.className = "card";
-        article.innerHTML = `
-          <h3>${item.title}</h3>
-          <small>${item.date}</small>
-          <p>${item.content}</p>
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <h3>${item.title || "-"}</h3>
+          <small>พ.ศ. ${item.year_be || "-"}</small>
+          <p>${item.description || ""}</p>
+          <div style="font-size:12px;color:#666;">
+            หมวดหมู่: ${item.category || "-"} |
+            อ้างอิง: ${item.source_note || "-"}
+          </div>
         `;
-        container.appendChild(article);
+
+        container.appendChild(card);
       });
 
-    })
-    .catch(err => console.error("News fetch error:", err));
-}
+    });
+  }
+
+  // =========================
+  // COMMUNITY PAGE
+  // =========================
+  if (document.getElementById("community-list")) {
+
+    fetchData("COMMUNITY").then(data => {
+
+      const container = document.getElementById("community-list");
+      container.innerHTML = "";
+
+      data.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item.name || "-";
+        container.appendChild(li);
+      });
+
+    });
+  }
+
+  // =========================
+  // LOCATIONS PAGE
+  // =========================
+  if (document.getElementById("location-list")) {
+
+    fetchData("LOCATIONS").then(data => {
+
+      const container = document.getElementById("location-list");
+      container.innerHTML = "";
+
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.description || ""}</p>
+        `;
+
+        container.appendChild(card);
+      });
+
+    });
+  }
+
+  // =========================
+  // LEADERS PAGE
+  // =========================
+  if (document.getElementById("leaders-list")) {
+
+    fetchData("LEADERS").then(data => {
+
+      const container = document.getElementById("leaders-list");
+      container.innerHTML = "";
+
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>ตำแหน่ง: ${item.position || "-"}</p>
+          <p>ช่วงเวลา: ${item.period || "-"}</p>
+        `;
+
+        container.appendChild(card);
+      });
+
+    });
   }
 
 });
