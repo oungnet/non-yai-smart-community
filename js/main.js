@@ -45,6 +45,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       })
       .catch(err => console.error("Community fetch error:", err));
+
+    // News page
+    if (document.getElementById("news-list")) {
+
+      fetch("data/news.json")
+       .then(res => res.json())
+       .then(data => {
+
+      const container = document.getElementById("news-list");
+      container.innerHTML = "";
+
+      data.forEach(item => {
+        const article = document.createElement("div");
+        article.className = "card";
+        article.innerHTML = `
+          <h3>${item.title}</h3>
+          <small>${item.date}</small>
+          <p>${item.content}</p>
+        `;
+        container.appendChild(article);
+      });
+
+    })
+    .catch(err => console.error("News fetch error:", err));
+}
   }
 
 });
