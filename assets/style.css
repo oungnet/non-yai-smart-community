@@ -38,6 +38,15 @@ main {
   margin: auto;
 }
 
+.stat-box {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.stat-box:hover {
+  transform: translateY(-4px);
+}
+
 .card {
   background: white;
   padding: 1.5rem;
