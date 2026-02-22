@@ -24,27 +24,16 @@
   <div class="card">
     <h2>แบบฟอร์มแจ้งปัญหา / ข้อเสนอแนะ</h2>
 
-    <form id="report-form">
-      <label>ชื่อผู้แจ้ง</label>
-      <input type="text" id="name" required>
+    <!-- วาง iframe จาก Google Forms ตรงนี้ -->
+        
+    <iframe 
+      src="https://forms.gle/8qejRgEcN8EkkxxS9"
+      width="100%" 
+      height="900" 
+      frameborder="0"
+      style="border-radius:8px;">
+    </iframe>
 
-      <label>ประเภทเรื่อง</label>
-      <select id="category" required>
-        <option value="">-- เลือกประเภท --</option>
-        <option>ถนน / ไฟฟ้า</option>
-        <option>น้ำประปา</option>
-        <option>สิ่งแวดล้อม</option>
-        <option>ความปลอดภัย</option>
-        <option>ข้อเสนอแนะทั่วไป</option>
-      </select>
-
-      <label>รายละเอียด</label>
-      <textarea id="detail" rows="5" required></textarea>
-
-      <button type="submit">ส่งข้อมูล</button>
-    </form>
-
-    <p id="form-status"></p>
   </div>
 
 </main>
@@ -52,29 +41,6 @@
 <footer>
   บ้านโนนใหญ่ ต.ก่อเอ้ อ.เขื่องใน จ.อุบลราชธานี
 </footer>
-
-<script>
-document.getElementById("report-form").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const category = document.getElementById("category").value;
-  const detail = document.getElementById("detail").value;
-
-  const message = `
-ชื่อ: ${name}
-ประเภท: ${category}
-รายละเอียด: ${detail}
-`;
-
-  window.open(
-    "https://docs.google.com/forms/d/e/ใส่ลิงก์ฟอร์มของคุณ/viewform?usp=pp_url&entry.123456=" + encodeURIComponent(name),
-    "_blank"
-  );
-
-  document.getElementById("form-status").textContent = "กำลังเปิดแบบฟอร์ม...";
-});
-</script>
 
 </body>
 </html>
