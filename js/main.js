@@ -44,24 +44,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =========================
-  // COMMUNITY PAGE
-  // =========================
-  if (document.getElementById("community-list")) {
+ // =========================
+// COMMUNITY PAGE
+// =========================
+if (document.getElementById("community-name")) {
 
-    fetchData("COMMUNITY").then(data => {
+  fetch(`${API_BASE}?type=COMMUNITY`)
+    .then(res => res.json())
+    .then(data => {
 
-      const container = document.getElementById("community-list");
-      container.innerHTML = "";
+      if (!Array.isArray(data) || data.length === 0) return;
 
-      data.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item.name || "-";
-        container.appendChild(li);
-      });
+      const info = data[0]; // ใช้แถวแรกเป็นข้อมูลหลัก
 
-    });
-  }
+      document.getElementById("community-name").textContent =
+        info.name || "ไม่พบชื่อชุมชน";
+
+      document.getElementById("community-location").textContent =
+        info.location || "";
+
+      document.getElementById("community-summary").textContent =
+        info.summary || "";
+
+      document.getElementById("community-history").textContent =
+        info.history || "";
+
+      // อาชีพหลัก (comma separated)
+      const jobsList = document.getElementById("community-jobs");
+      jobsList.innerHTML = "";
+
+      if (info.main_jobs) {
+        const jobs = info.main_jobs.split(",");
+        jobs.forEach(job => {
+          const li = document.createElement("li");
+          li.textContent = job.trim();
+          jobsList.appendChild(li);
+        });
+      }
+
+    })
+    .catch(err => console.error("Community fetch error:", err));
+}
 
   // =========================
   // LOCATIONS PAGE
