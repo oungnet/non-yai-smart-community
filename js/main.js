@@ -137,4 +137,43 @@ if (document.getElementById("community-name")) {
     });
   }
 
+  // =========================
+// STATS (From Google Sheet)
+// =========================
+if (document.getElementById("population")) {
+
+  fetch(`${API_BASE}?type=STATS`)
+    .then(res => res.json())
+    .then(data => {
+
+      const stats = {};
+      data.forEach(row => {
+        stats[row.key] = row.value;
+        if (row.updated) stats.updated = row.updated;
+      });
+
+      document.getElementById("population").textContent =
+        stats.population || "--";
+
+      document.getElementById("households").textContent =
+        stats.households || "--";
+
+      if (document.getElementById("updated")) {
+        document.getElementById("updated").textContent =
+          stats.updated || "--";
+      }
+
+      if (document.getElementById("home-population")) {
+        document.getElementById("home-population").textContent =
+          stats.population || "--";
+        document.getElementById("home-households").textContent =
+          stats.households || "--";
+        document.getElementById("home-updated").textContent =
+          stats.updated || "--";
+      }
+
+    })
+    .catch(err => console.error("Stats fetch error:", err));
+}
+
 });
