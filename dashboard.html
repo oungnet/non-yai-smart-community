@@ -1,12 +1,17 @@
 <!doctype html>
-<html lang="th"><head>
-<meta charset="utf-8"><title>Dashboard</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>Dashboard - บ้านโนนใหญ่</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/style.css">
 <script src="js/main.js" defer></script>
-</head><body>
+</head>
+
+<body>
+
 <header>
-<h1>โนนใหญ่ สมาร์ทชุมชน</h1>
+<h1>บ้านโนนใหญ่ สมาร์ทชุมชน</h1>
 <nav>
 <a href="index.html">หน้าแรก</a>
 <a href="community.html">ประวัติชุมชน</a>
@@ -15,9 +20,33 @@
 <a href="dashboard.html">Dashboard</a>
 </nav>
 </header>
+
 <main>
-<div class="card"><h2>ภาพรวมชุมชน</h2>
-<ul><li>ครัวเรือน ~180</li><li>อาชีพ: ทำนา</li></ul></div>
+
+<section class="card">
+<h2>ข้อมูลภาพรวมชุมชน</h2>
+
+<div class="stats">
+<div class="stat-box">
+<p class="label">จำนวนประชากร</p>
+<p id="population" class="value">--</p>
+</div>
+
+<div class="stat-box">
+<p class="label">จำนวนครัวเรือน</p>
+<p id="households" class="value">--</p>
+</div>
+</div>
+
+<p class="updated">อัปเดตล่าสุด: <span id="updated">--</span></p>
+
+</section>
+
 </main>
-<footer>บ้านโนนใหญ่ ไทกุลา ต.ก่อเอ้ อ.เขื่องใน จ.อุบลราชธานี</footer>
-</body></html>
+
+<footer>
+บ้านโนนใหญ่ ต.ก่อเอ้ อ.เขื่องใน จ.อุบลราชธานี
+</footer>
+
+</body>
+</html>
