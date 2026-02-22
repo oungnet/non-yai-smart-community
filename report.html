@@ -1,1 +1,80 @@
-<html><body><h1>แจ้งเรื่อง</h1></body></html>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แจ้งเรื่อง - บ้านโนนใหญ่</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <h1>บ้านโนนใหญ่ สมาร์ทชุมชน</h1>
+  <nav>
+    <a href="index.html">หน้าแรก</a>
+    <a href="community.html">ประวัติชุมชน</a>
+    <a href="news.html">ข่าว</a>
+    <a href="report.html" class="active">แจ้งเรื่อง</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <div class="card">
+    <h2>แบบฟอร์มแจ้งปัญหา / ข้อเสนอแนะ</h2>
+
+    <form id="report-form">
+      <label>ชื่อผู้แจ้ง</label>
+      <input type="text" id="name" required>
+
+      <label>ประเภทเรื่อง</label>
+      <select id="category" required>
+        <option value="">-- เลือกประเภท --</option>
+        <option>ถนน / ไฟฟ้า</option>
+        <option>น้ำประปา</option>
+        <option>สิ่งแวดล้อม</option>
+        <option>ความปลอดภัย</option>
+        <option>ข้อเสนอแนะทั่วไป</option>
+      </select>
+
+      <label>รายละเอียด</label>
+      <textarea id="detail" rows="5" required></textarea>
+
+      <button type="submit">ส่งข้อมูล</button>
+    </form>
+
+    <p id="form-status"></p>
+  </div>
+
+</main>
+
+<footer>
+  บ้านโนนใหญ่ ต.ก่อเอ้ อ.เขื่องใน จ.อุบลราชธานี
+</footer>
+
+<script>
+document.getElementById("report-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const category = document.getElementById("category").value;
+  const detail = document.getElementById("detail").value;
+
+  const message = `
+ชื่อ: ${name}
+ประเภท: ${category}
+รายละเอียด: ${detail}
+`;
+
+  window.open(
+    "https://docs.google.com/forms/d/e/ใส่ลิงก์ฟอร์มของคุณ/viewform?usp=pp_url&entry.123456=" + encodeURIComponent(name),
+    "_blank"
+  );
+
+  document.getElementById("form-status").textContent = "กำลังเปิดแบบฟอร์ม...";
+});
+</script>
+
+</body>
+</html>
