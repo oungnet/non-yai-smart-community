@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- trigger deploy -->
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <title>หน้าแรก - บ้านโนนใหญ่</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/style.css">
+<script src="js/main.js" defer></script>
 </head>
 
 <body>
@@ -22,30 +22,60 @@
 </header>
 
 <main>
+<div class="container">
 
 <section class="hero">
-  <h2>ศูนย์ข้อมูลชุมชนดิจิทัล</h2>
-  <p>รวบรวมข้อมูลและข่าวสารของบ้านโนนใหญ่</p>
+<h2>ศูนย์ข้อมูลชุมชนดิจิทัล</h2>
+<p>รวบรวมข้อมูล ข่าวสาร และสถิติสำคัญของบ้านโนนใหญ่</p>
 </section>
 
-<div class="stats" style="margin-top:20px;">
-  <a href="dashboard.html" class="stat-box" style="text-decoration:none;">
-    <p class="label">ดูข้อมูลภาพรวม</p>
-    <p class="value">Dashboard</p>
-  </a>
+<section class="card" style="margin-top:30px;">
+<h2>ภาพรวมชุมชน</h2>
+
+<div class="stats" style="margin-top:15px;">
+
+<div class="stat-box">
+<p class="label">จำนวนประชากร</p>
+<p id="home-population" class="value">--</p>
 </div>
 
-</main>
+<div class="stat-box">
+<p class="label">จำนวนครัวเรือน</p>
+<p id="home-households" class="value">--</p>
+</div>
 
-<div class="stats" style="margin-top:20px;">
+</div>
+
+<p style="margin-top:15px;">
+อัปเดตล่าสุด: <span id="home-updated">--</span>
+</p>
+
+</section>
+
+<section class="card" style="margin-top:30px;">
+<h2>เมนูด่วน</h2>
+
+<div class="stats" style="margin-top:15px;">
+
 <a href="dashboard.html" class="stat-box" style="text-decoration:none;">
 <p class="label">ดูข้อมูลภาพรวม</p>
 <p class="value">Dashboard</p>
 </a>
-</div>
 
+<a href="news.html" class="stat-box" style="text-decoration:none;">
+<p class="label">ข่าวสารล่าสุด</p>
+<p class="value">ข่าว</p>
+</a>
+
+<a href="report.html" class="stat-box" style="text-decoration:none;">
+<p class="label">แจ้งปัญหา</p>
+<p class="value">รายงาน</p>
+</a>
+
+</div>
 </section>
 
+</div>
 </main>
 
 <footer>
